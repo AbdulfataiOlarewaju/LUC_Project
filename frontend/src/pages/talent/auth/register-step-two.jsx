@@ -1,52 +1,54 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { GraduationCap, ImagePlus, X } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchNiches, fetchSubNiches } from "@/store/talent/niches-slice";
+import { saveStepTwo } from "@/store/auth/registerSlice";
+import { toast } from "sonner";
 
 function TalentRegisterTwoPage() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
-
   const [photoName, setPhotoName] = useState("");
-  const [coreNiches, setCoreNiches] = useState(["IT"]);
-  const [refined, setRefined] = useState([
-    {
-      category: "IT SPECIALTIES",
-      items: ["Cybersecurity", "Cloud Architecture"],
-    },
-    { category: "ENGINEERING SPECIALTIES", items: ["Mechanical Design"] },
-  ]);
+  const [coreNiches, setCoreNiches] = useState([]);
   const [bio, setBio] = useState("");
 
-  const allCoreNiches = useMemo(
-    () => ["IT", "Engineering", "Fashion", "+ Other"],
-    [],
-  );
+  const [openNiches, setOpenNiches] = useState([]);
+  const [selectedSubNiches, setSelectedSubNiches] = useState([]);
 
+  const { niches, subNichesByNiche } = useSelector((state) => state.niches);
+
+  const dispatch = useDispatch();
   const canContinue = coreNiches.length > 0;
+  const toggleNiche = (nicheId) => {
+    setOpenNiches((prev) => {
+      const isOpen = prev.includes(nicheId);
 
-  const toggleCoreNiche = (niche) => {
-    setCoreNiches((prev) =>
-      prev.includes(niche)
-        ? prev.filter((item) => item !== niche)
-        : [...prev, niche],
-    );
+      if (isOpen) {
+        return prev.filter((id) => id !== nicheId);
+      } else {
+        // fetch ONLY if not already fetched
+        if (!subNichesByNiche[nicheId]) {
+          dispatch(fetchSubNiches(nicheId));
+        }
+        return [...prev, nicheId];
+      }
+    });
   };
 
-  const removeRefined = (category, item) => {
-    setRefined((prev) =>
-      prev.map((group) =>
-        group.category !== category
-          ? group
-          : {
-              ...group,
-              items: group.items.filter((i) => i !== item),
-            },
-      ),
-    );
-  };
+  const toggleSubNiche = (sub) => {
+    setSelectedSubNiches((prev) => {
+      const exists = prev.find((item) => item.id === sub.id);
 
+      if (exists) {
+        return prev.filter((item) => item.id !== sub.id);
+      }
+
+      return [...prev, sub];
+    });
+  };
   const handleFileChange = (event) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -54,6 +56,24 @@ function TalentRegisterTwoPage() {
     }
   };
 
+  useEffect(() => {
+    dispatch(fetchNiches());
+  }, [dispatch]);
+
+  console.log(niches);
+  console.log("subNichesByNiche:", subNichesByNiche);
+
+  function handleContinue(){
+    if(selectedSubNiches.length === 0  && !bio.trim()){
+      toast.message('Please select at least one sub-niche and enter your bio to continue');
+      return
+    }
+    dispatch(
+    saveStepTwo({
+      sub_niche_id: selectedSubNiches.map((item) => item.id),
+      bio,
+    }))
+  }
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="h-16 flex items-center justify-between px-6 border-b bg-white">
@@ -99,22 +119,59 @@ function TalentRegisterTwoPage() {
               Upload a professional headshot. Max size 5MB. JPG or PNG.
             </p>
 
-            <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center">
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                className="group flex items-center gap-3 rounded-lg border border-dashed border-slate-300 bg-white px-5 py-4 text-left shadow-sm hover:border-blue-500 hover:bg-blue-50"
-              >
-                <span className="grid h-14 w-14 place-items-center rounded-full bg-slate-100 text-slate-500">
-                  <ImagePlus className="h-6 w-6" />
-                </span>
-                <div>
-                  <p className="text-sm font-medium">Select File</p>
-                  <p className="text-xs text-slate-500">
-                    {photoName || "Choose a file to upload"}
-                  </p>
+            <div className="mt-6 flex items-center gap-6">
+              <div className="relative">
+                <div className="w-24 h-24 rounded-full bg-slate-100 overflow-hidden flex items-center justify-center">
+                  {photoName ? (
+                    <img
+                      src={URL.createObjectURL(
+                        fileInputRef.current?.files?.[0],
+                      )}
+                      alt="profile"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <ImagePlus className="w-6 h-6 text-slate-400" />
+                  )}
                 </div>
-              </button>
+
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="absolute bottom-0 right-0 bg-blue-700 text-white p-1.5 rounded-full shadow"
+                >
+                  <ImagePlus className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="text-sm font-medium text-blue-700 hover:underline"
+                >
+                  Upload new photo
+                </button>
+
+                {photoName && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPhotoName("");
+                      if (fileInputRef.current) {
+                        fileInputRef.current.value = "";
+                      }
+                    }}
+                    className="text-sm text-red-500 hover:underline"
+                  >
+                    Remove photo
+                  </button>
+                )}
+
+                <p className="text-xs text-slate-400">
+                  {photoName || "No file selected"}
+                </p>
+              </div>
 
               <input
                 ref={fileInputRef}
@@ -133,22 +190,20 @@ function TalentRegisterTwoPage() {
             </p>
 
             <div className="mt-4 flex flex-wrap gap-2">
-              {allCoreNiches.map((niche) => {
-                const selected = coreNiches.includes(niche);
-                const isAdd = niche === "+ Other";
+              {niches.map((niche) => {
+                const isOpen = openNiches.includes(niche.id);
 
                 return (
                   <button
-                    key={niche}
-                    type="button"
-                    onClick={() => toggleCoreNiche(niche)}
-                    className={`rounded-lg border px-4 py-2 text-sm font-medium transition ${
-                      selected
-                        ? "border-blue-700 bg-blue-700 text-white"
-                        : "border-slate-200 bg-white text-slate-700 hover:bg-blue-50"
-                    } ${isAdd ? "border-dashed" : ""}`}
+                    key={niche.id}
+                    onClick={() => toggleNiche(niche.id)}
+                    className={`px-4 py-2 rounded-lg border text-sm ${
+                      isOpen
+                        ? "bg-blue-700 text-white border-blue-700"
+                        : "bg-white border-slate-200 text-slate-700"
+                    }`}
                   >
-                    {niche}
+                    {niche.name}
                   </button>
                 );
               })}
@@ -168,41 +223,42 @@ function TalentRegisterTwoPage() {
               </p>
             </div>
 
-            <div className="mt-4 space-y-4">
-              {refined.map((group) => (
-                <div
-                  key={group.category}
-                  className="rounded-lg bg-slate-50 p-4"
-                >
-                  <p className="text-xs font-semibold text-slate-500">
-                    {group.category}
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {group.items.map((item) => (
-                      <span
-                        key={item}
-                        className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700"
-                      >
-                        {item}
-                        <button
-                          type="button"
-                          onClick={() => removeRefined(group.category, item)}
-                          className="rounded-full p-1 text-blue-700 hover:bg-blue-100"
-                          aria-label={`Remove ${item}`}
-                        >
-                          ✕
-                        </button>
-                      </span>
-                    ))}
-                    <button
-                      type="button"
-                      className="rounded-full border border-dashed border-slate-300 bg-white px-3 py-1 text-xs text-slate-500 hover:border-blue-500 hover:text-blue-700"
-                    >
-                      + Add
-                    </button>
+            <div className="mt-6 space-y-6">
+              {openNiches.map((nicheId) => {
+                const niche = niches.find((n) => n.id === nicheId);
+                const subNiches = subNichesByNiche[nicheId] || [];
+
+                return (
+                  <div key={nicheId}>
+                    <p className="text-xs font-semibold text-blue-600 uppercase">
+                      {niche?.name} SPECIALTIES
+                    </p>
+
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {subNiches.map((sub) => {
+                        const selected = selectedSubNiches.some(
+                          (item) => item.id === sub.id,
+                        );
+
+                        return (
+                          <button
+                            key={sub.id}
+                            onClick={() => toggleSubNiche(sub)}
+                            className={`px-3 py-1 rounded-full text-xs ${
+                              selected
+                                ? "bg-blue-700 text-white"
+                                : "bg-slate-100 text-slate-600"
+                            }`}
+                          >
+                            {sub.name}
+                            {selected && " ✕"}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -228,20 +284,19 @@ function TalentRegisterTwoPage() {
 
         <div className="mt-10 text-center">
           <Button
-            className="w-full bg-blue-700 py-5"
-            onClick={() => navigate("/talent-sign-up/step-three")}
-            disabled={!canContinue}
+            className="w-full bg-blue-700 py-5 cursor-pointer"
+            onClick={handleContinue}
           >
             Continue →
           </Button>
 
-          <button
+          <Button
             type="button"
-            className="mt-4 text-sm text-slate-400 hover:text-slate-600"
-            onClick={() => navigate("/")}
+            className="mt-4 text-sm text-slate-400 hover:text-slate-600 bg-gray-200 w-full py-5 cursor-pointer"
+              onClick={handleContinue}
           >
             Save for Later
-          </button>
+          </Button>
         </div>
 
         <div className="flex flex-col items-center justify-center gap-3 text-xs text-slate-400 mt-10 sm:flex-row">

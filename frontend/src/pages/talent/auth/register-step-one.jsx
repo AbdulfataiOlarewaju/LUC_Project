@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,8 +11,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { GraduationCap, User, X } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { saveStepOne } from "@/store/auth/registerSlice";
+import { fetchInstitutions } from "@/store/talent/institution-slice";
 
 
 function TalentRegisterOnePage() {
@@ -22,21 +23,34 @@ function TalentRegisterOnePage() {
   const [major, setMajor] = useState("");
   const [level, setLevel] = useState("Undergrad");
 
+   const { institutions, isLoading } = useSelector((state) => state.institutions);
+   
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log('institution fetched successfully');
+    dispatch(fetchInstitutions());
+    
+    
+  }, [dispatch]);
+
+  console.log("Hero institutions:", institutions);
+
   const universities = [
-    "Select University",
-    "University of Lagos",
-    "MIT",
-    "Stanford University",
-    "Other",
+    { id: '', name: 'Select University' },
+    ...institutions.map((inst) => ({
+      id: inst.id,
+      name: inst.name
+    }))
   ];
 
   const canContinue =
     fullName.trim().length > 0 &&
     major.trim().length > 0 &&
     university &&
-    university !== "Select University";
+    university !== '';
 
-    const dispatch = useDispatch();
+    
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -82,7 +96,7 @@ function TalentRegisterOnePage() {
 
           <div className="grid md:grid-cols-2 gap-4 mt-6">
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <User className="absolute left-3 top-1/2 w-5 h-4 -translate-y-1/2 text-slate-400" />
               <Input
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
@@ -96,13 +110,17 @@ function TalentRegisterOnePage() {
               onValueChange={(value) => setUniversity(value)}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select University" />
+                <SelectValue placeholder={isLoading ? "Loading..." : "Select University"} />
               </SelectTrigger>
               <SelectGroup>
-                <SelectContent className="mt-9">
+                <SelectContent className='mt-15'>
                   {universities.map((item) => (
-                    <SelectItem key={item} value={item}>
-                      {item}
+                    <SelectItem 
+                      key={item.id || 'placeholder'} 
+                      value={item.id || 'placeholder'}
+                      disabled={!item.id}
+                    >
+                      {item.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -155,10 +173,11 @@ function TalentRegisterOnePage() {
 
             <Button
               onClick={() => {
+    if (!canContinue) return;
     dispatch(
       saveStepOne({
         full_name: fullName,
-        institution_id: university, // ⚠️ must be ID later
+        institution_id: university,
         major,
         level,
       })

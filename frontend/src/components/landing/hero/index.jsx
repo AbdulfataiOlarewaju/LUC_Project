@@ -10,21 +10,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { containerVariants, itemVariants, floatVariants, buttonVariants } from "@/lib/animations.js";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchInstitutions } from "@/store/talent/institution-slice";
+import { fetchAllTalents } from "@/store/talent/talent-slice";
 
 export default function Hero() {
-  const initialFormData = {
-  status: "",
-};
-const [formData, setFormData] = useState(initialFormData);
- const universities = [
-    "Select University",
-    "University of Lagos",
-    "MIT",
-    "Stanford University",
-    "Other",
-  ];
+  const { institutions, isLoading } = useSelector((state) => state.institutions);
+   const { talents } = useSelector((state)=>state.talents)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log('Hero useEffect: dispatching fetches');
+    dispatch(fetchInstitutions());
+    dispatch(fetchAllTalents());
+    console.log('Dispatched fetchAllTalents');
+  }, [dispatch]);
+
+  console.log("Hero institutions:", institutions);
+  console.log("Talents state:", talents);
+  
+
   return (
     <motion.section 
       className="py-20 px-6 lg:px-12 bg-white"
@@ -85,13 +92,19 @@ const [formData, setFormData] = useState(initialFormData);
                 <SelectTrigger className="w-full max-w-48 bg-gray-100">
                   <SelectValue placeholder={<><School className="h-4 w-4 mr-2" /> Institution</>} />
                 </SelectTrigger>
-                 <SelectContent className='mt-9'>
-                {universities.map((item) => (
-                  <SelectItem key={item} value={item}>
-                    {item}
-                  </SelectItem>
-                ))}
-              </SelectContent>
+                <SelectContent className='mt-9'>
+                  {isLoading ? (
+                    <SelectItem disabled>Loading institutions...</SelectItem>
+                  ) : institutions && institutions.length > 0 ? (
+                    institutions.map((institution) => (
+                      <SelectItem key={institution.id} value={institution.name}>
+                        {institution.name}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem disabled>No institutions available</SelectItem>
+                  )}
+                </SelectContent>
               </Select>
             </motion.div>
             <motion.div variants={itemVariants}>
@@ -100,9 +113,7 @@ const [formData, setFormData] = useState(initialFormData);
                   <SelectValue placeholder={<><User className="h-4 w-4 mr-2" /> Talent Name</>} />
                 </SelectTrigger>
                 <SelectContent className="mt-9">
-                 {
-                  
-                 }
+                  {/* Talent names to be implemented */}
                 </SelectContent>
               </Select>
             </motion.div>

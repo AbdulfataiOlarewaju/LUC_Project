@@ -12,6 +12,7 @@ import UniversityRegsiterPage from "./pages/university/auth/resgiter"
 import SuperAdminRegsiterPage from "./pages/super-admin/auth/resgiter"
 import ClientRegsiterPage from "./pages/client/auth/resgiter"
 import VerifiationStatus from "./pages/talent/auth/verification-status"
+import { Toaster } from "sonner"
 
 
 
@@ -21,6 +22,7 @@ function App() {
 
   return (
    <div className='flex flex-col overflow-hidden bg-white'>
+    <Toaster position="top-left" />
     <Routes>
 
       {/* LandingPage Routes */}

@@ -13,6 +13,7 @@ const initialState = {
   password: "",
 };
 
+
 const registerSlice = createSlice({
   name: "register",
   initialState,
@@ -37,6 +38,8 @@ const registerSlice = createSlice({
     clearRegistration: () => initialState,
   },
 });
+
+
 
 export const {
   saveStepOne,

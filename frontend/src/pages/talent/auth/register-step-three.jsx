@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { saveStepThree } from "@/store/auth/registerSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,11 +8,13 @@ import { AlertTriangle, GraduationCap, Mail, UserCheck } from "lucide-react";
 
 function TalentRegisterThreePage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [matriculation, setMatriculation] = useState("");
+  const dispatch = useDispatch();
+  const register = useSelector((state) => state.register);
+  const [email, setEmail] = useState(register.email || "");
+  const [matriculation, setMatriculation] = useState(""); 
 
-//   const isValidEmail = (value) => /^[^\s@]+@[^\s@]+\.(edu|university)$/i.test(value);
-//   const canSubmit = isValidEmail(email) && matriculation.trim().length > 3;
+  const isValidEmail = (value) => /^[^\\s@]+@[^\\s@]+\\.(edu|university)$/i.test(value);
+  const canSubmit = isValidEmail(email) && matriculation.trim().length > 3;
 
   return (
     <div className="min-h-screen bg-slate-50 px-4 py-10">
@@ -119,8 +123,11 @@ function TalentRegisterThreePage() {
 
               <Button
                 className="flex items-center justify-center gap-2 bg-blue-700 px-6 py-3"
-                // disabled={!canSubmit}
-                onClick={() => navigate("/talent-sign-up/verification")}
+                disabled={!canSubmit}
+                onClick={() => {
+                  dispatch(saveStepThree({ email, password: '' })); // password from step3 if added
+                  navigate("/talent-sign-up/verification");
+                }}
               >
                 Complete Registration
                 <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white text-blue-700">
