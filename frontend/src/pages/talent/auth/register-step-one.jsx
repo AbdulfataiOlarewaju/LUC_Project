@@ -28,7 +28,7 @@ function TalentRegisterOnePage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('institution fetched successfully');
+    
     dispatch(fetchInstitutions());
     
     
@@ -50,12 +50,10 @@ function TalentRegisterOnePage() {
     university &&
     university !== '';
 
-    
-
   return (
     <div className="min-h-screen bg-slate-50">
       {/* HEADER */}
-      <div className="h-16 flex items-center justify-between px-6 border-b bg-white">
+      <div className="h-16 flex fixed w-full items-center justify-between px-6 border-b bg-white">
         <div className="flex items-center gap-2">
           <div className="p-2 bg-blue-700 text-white rounded-md">
             <GraduationCap className="w-5 h-5" />
@@ -73,7 +71,7 @@ function TalentRegisterOnePage() {
       </div>
 
       {/* CONTENT */}
-      <div className="max-w-4xl mx-auto mt-10 px-4">
+      <div className="max-w-4xl mx-auto mt-10 px-4 py-20">
         {/* TOP */}
         <p className="text-xs text-blue-600 font-semibold">STEP 1 OF 3</p>
 
@@ -110,7 +108,7 @@ function TalentRegisterOnePage() {
               onValueChange={(value) => setUniversity(value)}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder={isLoading ? "Loading..." : "Select University"} />
+                <SelectValue placeholder={ "Select University"} />
               </SelectTrigger>
               <SelectGroup>
                 <SelectContent className='mt-15'>

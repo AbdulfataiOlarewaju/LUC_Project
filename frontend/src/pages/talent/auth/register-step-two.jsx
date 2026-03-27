@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchNiches, fetchSubNiches } from "@/store/talent/niches-slice";
 import { saveStepTwo } from "@/store/auth/registerSlice";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function TalentRegisterTwoPage() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ function TalentRegisterTwoPage() {
   const [openNiches, setOpenNiches] = useState([]);
   const [selectedSubNiches, setSelectedSubNiches] = useState([]);
 
-  const { niches, subNichesByNiche } = useSelector((state) => state.niches);
+  const { niches, subNichesByNiche , isLoading} = useSelector((state) => state.niches);
 
   const dispatch = useDispatch();
   const canContinue = coreNiches.length > 0;
@@ -64,13 +65,14 @@ function TalentRegisterTwoPage() {
   console.log("subNichesByNiche:", subNichesByNiche);
 
   function handleContinue(){
-    if(selectedSubNiches.length === 0  && !bio.trim()){
+    if(selectedSubNiches.length === 0  || !bio.trim()){
       toast.message('Please select at least one sub-niche and enter your bio to continue');
       return
     }
     dispatch(
     saveStepTwo({
-      sub_niche_id: selectedSubNiches.map((item) => item.id),
+      // sub_niche_id: selectedSubNiches.map((item) => item.id),
+      sub_niche_id: selectedSubNiches[0]?.id,
       bio,
     }))
   }
@@ -192,8 +194,13 @@ function TalentRegisterTwoPage() {
             <div className="mt-4 flex flex-wrap gap-2">
               {niches.map((niche) => {
                 const isOpen = openNiches.includes(niche.id);
-
+                  if(isLoading){
+                    return (
+                      <Skeleton className="h-10 w-full" />
+                    )
+                  }
                 return (
+                  
                   <button
                     key={niche.id}
                     onClick={() => toggleNiche(niche.id)}
@@ -285,7 +292,10 @@ function TalentRegisterTwoPage() {
         <div className="mt-10 text-center">
           <Button
             className="w-full bg-blue-700 py-5 cursor-pointer"
-            onClick={handleContinue}
+            onClick={()=>{
+              handleContinue();
+              navigate('/talent-sign-up/step-three')
+            }}
           >
             Continue →
           </Button>
@@ -293,7 +303,10 @@ function TalentRegisterTwoPage() {
           <Button
             type="button"
             className="mt-4 text-sm text-slate-400 hover:text-slate-600 bg-gray-200 w-full py-5 cursor-pointer"
-              onClick={handleContinue}
+               onClick={()=>{
+              handleContinue(),
+              navigate('/')
+            }}
           >
             Save for Later
           </Button>

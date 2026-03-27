@@ -13,7 +13,7 @@ const initialState = ({
 export const registerUser = createAsyncThunk('auth/registerUser', 
     async(FormData, {rejectWithValue}) => {
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, 
+            const response = await axios.post('/api/auth/register', 
                 FormData, {
                     withCredentials : true,
                     headers : {

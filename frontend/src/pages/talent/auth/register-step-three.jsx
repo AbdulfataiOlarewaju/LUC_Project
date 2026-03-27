@@ -4,17 +4,63 @@ import { saveStepThree } from "@/store/auth/registerSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { AlertTriangle, GraduationCap, Mail, UserCheck } from "lucide-react";
+import {
+  AlertTriangle,
+  GraduationCap,
+  Lock,
+  Mail,
+  UserCheck,
+} from "lucide-react";
+import { registerUser } from "@/store/auth";
+import { toast } from "sonner";
 
 function TalentRegisterThreePage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const register = useSelector((state) => state.register);
   const [email, setEmail] = useState(register.email || "");
-  const [matriculation, setMatriculation] = useState(""); 
+  const [matriculation, setMatriculation] = useState("");
+  const [password, setPassword] = useState("");
+  const registerData = useSelector((state) => state.register);
 
-  const isValidEmail = (value) => /^[^\\s@]+@[^\\s@]+\\.(edu|university)$/i.test(value);
-  const canSubmit = isValidEmail(email) && matriculation.trim().length > 3;
+  const isValidEmail = (value) =>
+    /^[^\s@]+@[^\s@]+\.(edu|edu\.ng|university|ac\.uk)$/i.test(value);
+  const isValidPassword = (value) => value.length >= 6;
+
+  
+
+  const canSubmit =
+    isValidEmail(email) &&
+    matriculation.trim().length > 3 &&
+    isValidPassword(password);
+
+const handleSubmit = async () => {
+  if (!isValidEmail(email)) return;
+  if (matriculation.trim().length < 4) return;
+
+  const finalData = { ...registerData, email, password, role: "talent" };
+
+  try {
+    dispatch(saveStepThree({ email, password }));
+
+    const result = await dispatch(registerUser(finalData)).unwrap();
+
+    console.log(result);
+
+    toast.success("Registration successful!");
+    navigate("/talent-sign-up/verification");
+  } catch (error) {
+    console.error(error);
+
+    
+    toast.error(error?.error || "Registration failed");
+  }
+  console.log(finalData);
+  
+};
+
+
+   
 
   return (
     <div className="min-h-screen bg-slate-50 px-4 py-10">
@@ -39,10 +85,14 @@ function TalentRegisterThreePage() {
         </div>
 
         <div className="px-6 py-6">
-          <p className="text-xs font-semibold text-blue-600">REGISTRATION PROGRESS</p>
+          <p className="text-xs font-semibold text-blue-600">
+            REGISTRATION PROGRESS
+          </p>
           <div className="mt-2 flex items-center justify-between gap-4">
             <p className="text-sm font-medium">Step 3 of 3</p>
-            <p className="text-xs font-semibold text-slate-500">100% Complete</p>
+            <p className="text-xs font-semibold text-slate-500">
+              100% Complete
+            </p>
           </div>
 
           <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-200">
@@ -57,7 +107,8 @@ function TalentRegisterThreePage() {
           <div className="mt-8">
             <h2 className="text-2xl font-bold">Verify Your Status</h2>
             <p className="mt-2 text-sm text-slate-500">
-              Please provide your academic credentials to proceed. This information is used solely for identity validation.
+              Please provide your academic credentials to proceed. This
+              information is used solely for identity validation.
             </p>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2">
@@ -74,9 +125,9 @@ function TalentRegisterThreePage() {
                     className="w-full"
                   />
                 </div>
-                <p className="mt-1 text-xs text-slate-400">
-                  Must be a valid .edu or university domain address.
-                </p>
+                 <p className="mt-1 text-xs text-slate-400">
+                    Must be a valid .edu or university domain address.
+                  </p>
               </div>
 
               <div>
@@ -96,6 +147,24 @@ function TalentRegisterThreePage() {
                   Found on your university identity card.
                 </p>
               </div>
+              <div>
+                <label className="text-xs font-medium text-slate-500">
+                  Password
+                </label>
+                <div className="mt-2 flex items-center gap-2">
+                  <Lock className="h-4 w-4 text-slate-400" />
+                  <Input
+                    type="password"
+                    placeholder="Create a strong password"
+                    className="mt-2 w-full"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+
+                <p className="mt-1 text-xs text-slate-400">
+                  Minimum 8 characters
+                </p>
+              </div>
             </div>
 
             <div className="mt-6 rounded-lg border border-slate-200 bg-blue-50 p-4 text-sm text-slate-600">
@@ -104,9 +173,13 @@ function TalentRegisterThreePage() {
                   i
                 </span>
                 <div>
-                  <p className="font-medium text-slate-800">Platform Security</p>
+                  <p className="font-medium text-slate-800">
+                    Platform Security
+                  </p>
                   <p className="mt-1 text-slate-600">
-                    Verification is powered by your university to ensure platform integrity. We cross-reference this data with institutional records to maintain a secure talent pool.
+                    Verification is powered by your university to ensure
+                    platform integrity. We cross-reference this data with
+                    institutional records to maintain a secure talent pool.
                   </p>
                 </div>
               </div>
@@ -124,10 +197,7 @@ function TalentRegisterThreePage() {
               <Button
                 className="flex items-center justify-center gap-2 bg-blue-700 px-6 py-3"
                 disabled={!canSubmit}
-                onClick={() => {
-                  dispatch(saveStepThree({ email, password: '' })); // password from step3 if added
-                  navigate("/talent-sign-up/verification");
-                }}
+                onClick={handleSubmit}
               >
                 Complete Registration
                 <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white text-blue-700">
@@ -139,8 +209,12 @@ function TalentRegisterThreePage() {
         </div>
 
         <div className="flex flex-col items-center justify-center gap-3 border-t px-6 py-6 text-xs text-slate-400 sm:flex-row">
-          <span className="hover:text-slate-600 cursor-pointer">Privacy Policy</span>
-          <span className="hover:text-slate-600 cursor-pointer">Academic Terms</span>
+          <span className="hover:text-slate-600 cursor-pointer">
+            Privacy Policy
+          </span>
+          <span className="hover:text-slate-600 cursor-pointer">
+            Academic Terms
+          </span>
           <span className="hover:text-slate-600 cursor-pointer">Support</span>
         </div>
 

@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router"
 import LandingPage from "./pages/landing"
 import Selection from "./pages/landing/selection"
-import TalentLoginPage from "./pages/talent/auth/login"
+import TalentLoginPage from "./pages/talent/login"
 import TalentRegisterOnePage from "./pages/talent/auth/register-step-one"
 import TalentRegsiterTwoPage from "./pages/talent/auth/register-step-two"
 import TalentRegsiterThreePage from "./pages/talent/auth/register-step-three"
@@ -13,6 +13,7 @@ import SuperAdminRegsiterPage from "./pages/super-admin/auth/resgiter"
 import ClientRegsiterPage from "./pages/client/auth/resgiter"
 import VerifiationStatus from "./pages/talent/auth/verification-status"
 import { Toaster } from "sonner"
+import TalentDashboard from "./pages/talent/telent-dashboard"
 
 
 
@@ -35,6 +36,14 @@ function App() {
       <Route path="/talent-sign-up/step-two" element={<TalentRegsiterTwoPage/>}/>
       <Route path="/talent-sign-up/step-three" element={<TalentRegsiterThreePage/>}/>
       <Route path="/talent-sign-up/verification" element={<VerifiationStatus/>}/>
+      <Route path="talent-dashboard" element={<TalentDashboard/>}/>
+      <Route path="talent-portfolio" element={<TalentDashboard/>}/>
+      <Route path="talent-logs" element={<TalentDashboard/>}/>
+      <Route path="talent-messages" element={<TalentDashboard/>}/>
+      <Route path="talent-competitions" element={<TalentDashboard/>}/>
+      <Route path="talent-settings" element={<TalentDashboard/>}/>
+      <Route path="talent-account-management" element={<TalentDashboard/>}/>
+      <Route path="talent-analytics" element={<TalentDashboard/>}/>
 
       {/* University Route */}
       <Route path="/university-sign-in" element={<UniversityLoginPage/>} />
