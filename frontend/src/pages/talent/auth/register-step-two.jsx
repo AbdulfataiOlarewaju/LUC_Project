@@ -19,6 +19,8 @@ function TalentRegisterTwoPage() {
   const [openNiches, setOpenNiches] = useState([]);
   const [selectedSubNiches, setSelectedSubNiches] = useState([]);
 
+  const currentYear = new Date().getFullYear();
+
   const { niches, subNichesByNiche , isLoading} = useSelector((state) => state.niches);
 
   const dispatch = useDispatch();
@@ -319,7 +321,7 @@ function TalentRegisterTwoPage() {
         </div>
 
         <p className="text-center text-xs text-slate-400 mt-4">
-          © 2024 LUC Talent Portal. All rights reserved.
+          © {currentYear} LUC Talent Portal. All rights reserved.
         </p>
       </div>
     </div>

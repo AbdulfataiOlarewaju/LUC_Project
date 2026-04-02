@@ -23,6 +23,8 @@ function TalentRegisterThreePage() {
   const [password, setPassword] = useState("");
   const registerData = useSelector((state) => state.register);
 
+  const currentYear = new Date().getFullYear();
+
   const isValidEmail = (value) =>
     /^[^\s@]+@[^\s@]+\.(edu|edu\.ng|university|ac\.uk)$/i.test(value);
   const isValidPassword = (value) => value.length >= 6;
@@ -219,7 +221,7 @@ const handleSubmit = async () => {
         </div>
 
         <p className="text-center text-xs text-slate-400 pb-6">
-          © 2024 LUC Global Talent Network. All rights reserved.
+          © {currentYear} LUC Global Talent Network. All rights reserved.
         </p>
       </div>
     </div>

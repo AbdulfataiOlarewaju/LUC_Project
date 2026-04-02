@@ -90,22 +90,21 @@ export default function Hero() {
             <motion.div variants={itemVariants}>
               <Select>
                 <SelectTrigger className="w-full max-w-48 bg-gray-100">
-                  <SelectValue placeholder={<><School className="h-4 w-4 mr-2" /> Institution</>} />
+                  <SelectValue placeholder={<><School className="h-4 w-4 mr-2" />institutions</>} />
                 </SelectTrigger>
                 <SelectContent className='mt-9'>
-                  {isLoading ? (
-                    <SelectItem disabled>Loading institutions...</SelectItem>
-                  ) : institutions && institutions.length > 0 ? (
+                  {
+                    
+                     (
                     institutions.map((institution) => (
                       <SelectItem key={institution.id} value={institution.name}>
                         {institution.name}
                       </SelectItem>
                     ))
-                  ) : (
-                    <SelectItem disabled>No institutions available</SelectItem>
-                  )}
+                  ) }
                 </SelectContent>
               </Select>
+                  
             </motion.div>
             <motion.div variants={itemVariants}>
               <Select>

@@ -1,13 +1,12 @@
-import TalentSidebar from "@/components/talent/sidebar";
 import {  Menu } from "lucide-react";
+import TalentSidebar from "@/components/talent/sidebar";
 import { useState } from "react";
-import TalentPortfolio from "@/components/talent/portifolio";
+import TalentSettings from "@/components/talent/settings";
 
-
-function Portifolio() {
-    const [openSidebar, setOpenSidebar] = useState(false);
+function Settings() {
+        const [openSidebar, setOpenSidebar] = useState(false);
     return ( 
-           <div className="flex min-h-screen ">
+              <div className="flex min-h-screen ">
       {/* sidebar */}
 
       <TalentSidebar open={openSidebar} setOpen={setOpenSidebar} />
@@ -25,11 +24,11 @@ function Portifolio() {
         </header>
 
         <div className="flex-1 p-6 bg-slate-50">
-          <TalentPortfolio />
+          <TalentSettings />
         </div>
       </main>
     </div>
      );
 }
 
-export default Portifolio;
+export default Settings;

@@ -11,6 +11,10 @@ import {
 } from "lucide-react";
 
 function VerifiationStatus() {
+
+  const currentYear = new Date().getFullYear();
+  const currentDate = new Date().getDate();
+  const currentMonth = new Date().getMonth();
   return (
     <div className="min-h-screen bg-[#f8fafc]">
 
@@ -90,7 +94,7 @@ function VerifiationStatus() {
                   Account Created
                 </p>
                 <p className="text-xs text-slate-500">
-                  Completed on Oct 24, 2023
+                  Completed on {currentMonth} {currentDate}, {currentYear}
                 </p>
               </div>
             </div>
@@ -156,7 +160,7 @@ function VerifiationStatus() {
 
         {/* FOOTER */}
         <div className="text-center text-xs text-slate-400 space-y-2">
-          <p>© 2023 TalentPortal. All rights reserved.</p>
+          <p>© {currentYear} TalentPortal. All rights reserved.</p>
           <div className="flex justify-center gap-4">
             <span>Terms of Service</span>
             <span>Privacy Policy</span>

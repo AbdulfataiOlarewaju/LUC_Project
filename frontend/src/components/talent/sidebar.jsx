@@ -28,7 +28,7 @@ function SidebarContent({ setOpen }) {
   const location = useLocation();
 
   return (
-    <div className="flex flex-col h-full justify-between bg-[#f8fafc]">
+    <div className="flex flex-col h-full justify-between bg-white">
       
       {/* TOP */}
       <div>
@@ -65,7 +65,7 @@ function SidebarContent({ setOpen }) {
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-lg cursor-pointer transition-all text-sm
                   ${
                     isActive
-                      ? "bg-blue-50 text-blue-600 font-medium"
+                      ? "bg-blue-50 text-blue-800 font-medium"
                       : "text-slate-600 hover:bg-slate-100"
                   }`}
               >
@@ -97,7 +97,7 @@ function SidebarContent({ setOpen }) {
     </div>
         <div
           // onClick={() => navigate("/talent-settings")}
-          className="flex items-center gap-3 mt-4 px-4 py-2.5 rounded-lg cursor-pointer text-sm text-blue-600 hover:bg-slate-100"
+          className="flex items-center gap-3 mt-4 px-4 py-2.5 rounded-lg cursor-pointer text-sm text-blue-800 hover:bg-slate-100"
         >
           <LogOut className="w-4 h-4" />
           <span className="text-bold">Log Out</span>
@@ -112,13 +112,13 @@ function TalentSidebar({ open, setOpen }) {
     <Fragment>
       {/* MOBILE */}
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="left" className="w-64 p-0 border-r bg-[#f8fafc]">
+        <SheetContent side="left" className="w-64 p-0 border-r bg-white">
           <SidebarContent setOpen={setOpen} />
         </SheetContent>
       </Sheet>
 
       {/* DESKTOP */}
-      <aside className="hidden lg:flex w-64 flex-col border-r bg-[#f8fafc]">
+      <aside className="hidden lg:flex w-64 flex-col border-r bg-white">
         <SidebarContent />
       </aside>
     </Fragment>

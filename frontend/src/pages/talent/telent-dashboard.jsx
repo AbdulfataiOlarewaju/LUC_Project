@@ -7,13 +7,14 @@ import TalentDashboardMain from "@/components/talent/dashboard";
 
 function TalentDashboard() {
   const [openSidebar, setOpenSidebar] = useState(false);
+  
   return (
     <div className="flex min-h-screen ">
       {/* sidebar */}
 
       <TalentSidebar open={openSidebar} setOpen={setOpenSidebar} />
       <main className="flex flex-1 flex-col lg:w-full w-screen">
-        <header className="w-full h-16 bg-[#f8fafc] flex items-center justify-between px-6 border-b md:hidden">
+        <header className="w-full h-16 bg-white flex items-center justify-between px-6 border-b md:hidden">
           {/* LEFT (Mobile menu only) */}
           <div className="flex items-center">
             <button

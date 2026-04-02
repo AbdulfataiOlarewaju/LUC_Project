@@ -23,6 +23,8 @@ function TalentRegisterOnePage() {
   const [major, setMajor] = useState("");
   const [level, setLevel] = useState("Undergrad");
 
+  const currentYear = new Date().getFullYear();
+
    const { institutions, isLoading } = useSelector((state) => state.institutions);
    
   const dispatch = useDispatch();
@@ -222,7 +224,7 @@ function TalentRegisterOnePage() {
 
         {/* BOTTOM FOOTER */}
         <p className="text-center text-xs text-slate-400 mt-10">
-          © 2024 LUC Platform. Empowering student excellence globally.
+          © {currentYear} LUC Platform. Empowering student excellence globally.
         </p>
       </div>
     </div>

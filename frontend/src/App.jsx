@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router"
 import LandingPage from "./pages/landing"
 import Selection from "./pages/landing/selection"
-import TalentLoginPage from "./pages/talent/login"
+import TalentLoginPage from "./pages/talent/auth/login"
 import TalentRegisterOnePage from "./pages/talent/auth/register-step-one"
 import TalentRegsiterTwoPage from "./pages/talent/auth/register-step-two"
 import TalentRegsiterThreePage from "./pages/talent/auth/register-step-three"
@@ -14,6 +14,13 @@ import ClientRegsiterPage from "./pages/client/auth/resgiter"
 import VerifiationStatus from "./pages/talent/auth/verification-status"
 import { Toaster } from "sonner"
 import TalentDashboard from "./pages/talent/telent-dashboard"
+import Portifolio from "./pages/talent/portifolio"
+import LearningLog from "./pages/talent/learning-log"
+import Message from "./pages/talent/message"
+import Competiton from "./pages/talent/competion"
+import AccountManagement from "./pages/talent/account-management"
+import Analysitics from "./pages/talent/analytics"
+import Settings from "./pages/talent/settings"
 
 
 
@@ -37,13 +44,13 @@ function App() {
       <Route path="/talent-sign-up/step-three" element={<TalentRegsiterThreePage/>}/>
       <Route path="/talent-sign-up/verification" element={<VerifiationStatus/>}/>
       <Route path="talent-dashboard" element={<TalentDashboard/>}/>
-      <Route path="talent-portfolio" element={<TalentDashboard/>}/>
-      <Route path="talent-logs" element={<TalentDashboard/>}/>
-      <Route path="talent-messages" element={<TalentDashboard/>}/>
-      <Route path="talent-competitions" element={<TalentDashboard/>}/>
-      <Route path="talent-settings" element={<TalentDashboard/>}/>
-      <Route path="talent-account-management" element={<TalentDashboard/>}/>
-      <Route path="talent-analytics" element={<TalentDashboard/>}/>
+      <Route path="talent-portfolio" element={<Portifolio/>}/>
+      <Route path="talent-logs" element={<LearningLog/>}/>
+      <Route path="talent-messages" element={<Message/>}/>
+      <Route path="talent-competitions" element={<Competiton/>}/>
+      <Route path="talent-settings" element={<Settings/>}/>
+      <Route path="talent-account-management" element={<AccountManagement/>}/>
+      <Route path="talent-analytics" element={<Analysitics/>}/>
 
       {/* University Route */}
       <Route path="/university-sign-in" element={<UniversityLoginPage/>} />

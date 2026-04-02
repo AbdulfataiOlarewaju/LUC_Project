@@ -1,8 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trophy, Upload, PlusCircle } from "lucide-react";
+import { Trophy, Upload, PlusCircle, UserSearch, EyeIcon, VerifiedIcon } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
+import ProjectUploadDialog from "./project-upload-modal";
+import { useState } from "react";
 
 function TalentDashboardMain() {
+  const [openProjectUploadDialog, setOpenProjectUploadDialog] = useState(false);
   return (
     <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 min-h-screen bg-[#f5f7fb]">
       {/* ===== TOP PROFILE BANNER ===== */}
@@ -25,7 +29,7 @@ function TalentDashboardMain() {
                   Loyola University Chicago
                 </p>
 
-                <p className="text-sm text-blue-600 truncate sm:truncate-none">
+                <p className="text-sm text-blue-800 truncate sm:truncate-none">
                   Computer Science & Visual Design
                 </p>
               </div>
@@ -33,10 +37,20 @@ function TalentDashboardMain() {
 
             {/* RIGHT */}
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto sm:self-end">
-              <Button className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2 flex-1 sm:flex-none py-2 cursor-pointer">
+              <Button onClick={()=>setOpenProjectUploadDialog(true)} className="bg-blue-800 hover:bg-blue-700 flex items-center gap-2 flex-1 sm:flex-none py-2 cursor-pointer">
                 <Upload className="w-4 h-4" />
                 Upload New Project
               </Button>
+              <Dialog
+              open={openProjectUploadDialog}
+                    onOpenChange={() => {
+                      setOpenProjectUploadDialog(false);
+                    }}>
+                      <ProjectUploadDialog setOpenProjectUploadDialog={setOpenProjectUploadDialog}  />
+                      {/* <DialogContent>
+                        <DialogHeader>Upload project dialog</DialogHeader>
+                      </DialogContent> */}
+              </Dialog>
 
               <Button variant="outline" className="flex items-center gap-2 flex-1 sm:flex-none py-2 cursor-pointer">
                 <PlusCircle className="w-4 h-4" />
@@ -52,27 +66,49 @@ function TalentDashboardMain() {
         {/* Approved */}
         <Card className="rounded-xl shadow-sm">
           <CardContent className="p-5">
+             <div className="flex justify-between font-medium items-center mb-2">
+              <div className="bg-blue-50 text-blue-800 rounded-md p-2">
+                <VerifiedIcon className="w-5 h-5"/>
+              </div>
+              
+              <p className="text-xl text-green-500 mt-1 rounded-sm bg-blue-50">+5%</p>
+              </div>
             <p className="text-sm text-slate-500">Approved Projects</p>
             <h2 className="text-xl sm:text-2xl font-semibold mt-2">12</h2>
-            <p className="text-xs text-green-500 mt-1">+15%</p>
+            
           </CardContent>
         </Card>
 
         {/* Views */}
         <Card className="rounded-xl shadow-sm">
           <CardContent className="p-5">
+             <div className="flex justify-between font-medium items-center mb-2">
+              <div className="bg-blue-50 text-blue-800 rounded-md p-2">
+                <EyeIcon className="w-5 h-5"/>
+              </div>
+              
+              <p className="text-xl text-green-500 mt-1 rounded-sm bg-blue-50">+22%</p>
+              </div>
+            
             <p className="text-sm text-slate-500">Portfolio Views</p>
             <h2 className="text-xl sm:text-2xl font-semibold mt-2">1,240</h2>
-            <p className="text-xs text-green-500 mt-1">+22%</p>
+            
           </CardContent>
         </Card>
 
         {/* Inquiries */}
         <Card className="rounded-xl shadow-sm">
           <CardContent className="p-5">
+            <div className="flex justify-between font-medium items-center mb-2">
+              <div className="bg-blue-50 text-blue-800 rounded-md p-2">
+                <UserSearch className="w-5 h-5"/>
+              </div>
+              
+              <p className="text-xl text-green-500 mt-1 rounded-sm bg-blue-50">+5%</p>
+              </div>
             <p className="text-sm text-slate-500">Client Inquiries</p>
             <h2 className="text-xl sm:text-2xl font-semibold mt-2">8</h2>
-            <p className="text-xs text-green-500 mt-1">+5%</p>
+            
           </CardContent>
         </Card>
 
@@ -101,7 +137,7 @@ function TalentDashboardMain() {
               </div>
 
               <div className="text-right">
-                <p className="text-xl sm:text-2xl font-bold text-blue-600">85%</p>
+                <p className="text-xl sm:text-2xl font-bold text-blue-800">85%</p>
                 <p className="text-xs text-green-500">+12% increase</p>
               </div>
             </div>
@@ -110,7 +146,7 @@ function TalentDashboardMain() {
             <div className="flex items-end gap-2 sm:gap-4 h-28 sm:h-40 overflow-hidden">
               <div className="w-4 sm:w-6 flex-1 bg-slate-200 rounded h-[40%] sm:h-16"></div>
               <div className="w-4 sm:w-6 flex-1 bg-slate-300 rounded h-[60%] sm:h-28"></div>
-              <div className="w-4 sm:w-6 flex-1 bg-blue-600 rounded h-[85%] sm:h-36"></div>
+              <div className="w-4 sm:w-6 flex-1 bg-blue-800 rounded h-[85%] sm:h-36"></div>
               <div className="w-4 sm:w-6 flex-1 bg-slate-300 rounded h-[45%] sm:h-20"></div>
               <div className="w-4 sm:w-6 flex-1 bg-slate-300 rounded h-[70%] sm:h-30"></div>
               <div className="w-4 sm:w-6 flex-1 bg-slate-200 rounded h-[50%] sm:h-18"></div>
@@ -168,7 +204,7 @@ function TalentDashboardMain() {
                 <p className="text-slate-400 mt-1">2 days ago</p>
               </div>
 
-              <button className="text-blue-600 hover:text-blue-700 text-xs sm:text-sm mt-3 w-full text-left">
+              <button className="text-blue-800 hover:text-blue-700 text-xs sm:text-sm mt-3 w-full text-left">
                 View All Activity →
               </button>
             </div>
