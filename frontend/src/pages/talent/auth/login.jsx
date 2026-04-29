@@ -17,8 +17,8 @@ function TalentLoginPage() {
 
   const currentYear = new Date().getFullYear();
 
-  function onSubmit(){
-    
+  function onSubmit(event){
+    event.preventDefault()
   }
     return ( 
         <div className="min-h-screen bg-slate-50">

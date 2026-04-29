@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/Button";
 import { Plus } from "lucide-react";
 
@@ -26,7 +26,7 @@ const projects = [
     status: "Revision Needed",
     date: "JAN 2024",
     color: "red",
-    image: "https://images.unsplash.com/photo-1521335629791-ce4aec67dd47",
+    image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c",
   },
   {
     title: "Community Garden...",
@@ -42,7 +42,7 @@ const projects = [
     status: "Approved",
     date: "NOV 2023",
     color: "green",
-    image: "https://images.unsplash.com/photo-1581091870627-3f1f0c6f61c5",
+    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
   },
 ];
 
@@ -55,18 +55,7 @@ const statusStyles = {
 function TalentPortfolio() {
   return (
     <div className="space-y-6">
-      {/* HEADER */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-semibold text-slate-800">
-            My Portfolio
-          </h1>
-        </div>
-
-        <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg cursor-pointer">
-          + Add New Project
-        </Button>
-      </div>
+      
 
       {/* TITLE */}
       <div>
@@ -100,7 +89,7 @@ function TalentPortfolio() {
         {projects.map((project, index) => (
           <Card
             key={index}
-            className="rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition"
+            className="rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition py-0"
           >
             {/* IMAGE */}
             <div className="h-32 w-full bg-slate-200 overflow-hidden">
@@ -130,16 +119,16 @@ function TalentPortfolio() {
               </p>
 
               {/* FOOTER */}
-              <div className="flex justify-between items-center text-xs text-slate-400 pt-2">
+              <CardFooter className="flex justify-between items-center text-xs text-slate-400 py-2 bg-transparent border-t">
                 <span>{project.date}</span>
                 <span className="text-blue-600 cursor-pointer">→</span>
-              </div>
+              </CardFooter>
             </CardContent>
           </Card>
         ))}
 
         {/* ADD NEW CARD */}
-        <div className="flex items-center justify-center border-2 border-dashed border-blue-300 rounded-xl h-[260px] cursor-pointer hover:bg-blue-50 transition">
+        <div className="flex items-center justify-center border-2 border-dashed border-blue-300 rounded-xl h-full cursor-pointer hover:bg-blue-50 transition">
           <div className="flex flex-col items-center text-blue-500">
             <Plus className="w-6 h-6 mb-2" />
             <p className="text-sm font-medium">New Project Entry</p>

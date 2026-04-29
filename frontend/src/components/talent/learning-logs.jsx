@@ -18,7 +18,7 @@ import {
   File,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSubNiches } from "@/store/talent/niches-slice";
+import { fetchNiches } from "@/store/talent/niches-slice";
 
 
 
@@ -56,9 +56,23 @@ const logs = [
 
 
 function NewEntryForm() {
+  
   const [date, setDate] = useState("");
   const [category, setCategory] = useState("");
   const [reflection, setReflection] = useState("");
+
+      const { niches, subNichesByNiche , isLoading} = useSelector((state) => state.niches);
+
+
+const dispatch = useDispatch();
+
+
+useEffect(()=>{
+    dispatch(fetchNiches())
+},[dispatch])
+
+
+console.log("niches:", niches);
 
   return (
     <div className="rounded-2xl bg-blue-950 border border-blue-900 p-6 text-white">
@@ -134,18 +148,7 @@ function NewEntryForm() {
 
 
 function TalentLearningLogs() {
-    const { niches, subNichesByNiche , isLoading} = useSelector((state) => state.niches);
 
-
-const dispatch = useDispatch();
-
-
-useEffect(()=>{
-    dispatch(fetchSubNiches())
-},[dispatch])
-
-
-console.log("subNichesByNiche:", subNichesByNiche);
   return (
     <div className="space-y-8">
       {/* TITLE */}
