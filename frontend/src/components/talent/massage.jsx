@@ -149,7 +149,7 @@ function TalentMessage() {
                       ? "justify-end"
                       : "justify-start"
                   }`}
-                >
+                >  
                   <div className="max-w-[85%] sm:max-w-md">
                     <div
                       className={`px-4 py-3 rounded-2xl text-sm shadow-sm ${
