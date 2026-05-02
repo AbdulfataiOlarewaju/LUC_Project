@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { getApiUrl } from "@/lib/api";
 
 const initialState = {
   isLoading: true,
@@ -12,9 +13,7 @@ export const fetchNiches = createAsyncThunk(
   "niches/fetchNiches",
   async (_, { rejectWithValue }) => {
     try {
-      const apiUrl = import.meta.env.PROD
-        ? "https://luc-m8t9.onrender.com/api/niches"
-        : "/api/niches";
+      const apiUrl = getApiUrl("/api/niches");
       const result = await axios.get(apiUrl);
 
       return result.data;
@@ -29,9 +28,7 @@ export const fetchSubNiches = createAsyncThunk(
   "niches/subNiches",
   async (nicheId, { rejectWithValue }) => {
     try {
-      const apiUrl = import.meta.env.PROD
-        ? `https://luc-m8t9.onrender.com/api/niches/${nicheId}/sub-niches`
-        : `/api/niches/${nicheId}/sub-niches`;
+      const apiUrl = getApiUrl(`/api/niches/${nicheId}/sub-niches`);
       const result = await axios.get(apiUrl);
 
       return { nicheId, data: result.data };

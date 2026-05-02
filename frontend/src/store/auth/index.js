@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { getApiUrl } from "@/lib/api";
 
 const AUTH_TOKEN_KEY = "auth_token";
 const AUTH_REFRESH_TOKEN_KEY = "auth_refresh_token";
@@ -93,9 +94,7 @@ export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (FormData, { rejectWithValue }) => {
     try {
-      const apiUrl = import.meta.env.PROD
-        ? "https://luc-m8t9.onrender.com/api/auth/register"
-        : "/api/auth/register";
+      const apiUrl = getApiUrl("/api/auth/register");
       const response = await axios.post(apiUrl, FormData);
       return response.data;
     } catch (err) {
@@ -108,9 +107,7 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (FormData, { rejectWithValue }) => {
     try {
-      const apiUrl = import.meta.env.PROD
-        ? "https://luc-m8t9.onrender.com/api/auth/login"
-        : "/api/auth/login";
+      const apiUrl = getApiUrl("/api/auth/login");
       const response = await axios.post(apiUrl, FormData);
       return response.data;
     } catch (err) {
@@ -126,9 +123,7 @@ export const logoutUser = createAsyncThunk(
       if (!refreshToken) {
         return { message: "No refresh token available" };
       }
-      const apiUrl = import.meta.env.PROD
-        ? "https://luc-m8t9.onrender.com/api/auth/logout"
-        : "/api/auth/logout";
+      const apiUrl = getApiUrl("/api/auth/logout");
       const response = await axios.post(apiUrl, { refreshToken });
       return response.data;
     } catch (err) {

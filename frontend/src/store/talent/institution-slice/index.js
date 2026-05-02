@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { getApiUrl } from "@/lib/api";
 
 const initialState = {
   isLoading: true,
@@ -12,7 +13,8 @@ export const fetchInstitutions = createAsyncThunk(
   "institutions/fetchInstitutions",
   async (_, { rejectWithValue }) => {
     try {
-const result = await axios.get("/api/institutions");
+      const apiUrl = getApiUrl("/api/institutions");
+      const result = await axios.get(apiUrl);
       return result.data;
       console.log(result.data);
       
