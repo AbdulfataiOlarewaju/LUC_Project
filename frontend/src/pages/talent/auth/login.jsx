@@ -24,7 +24,7 @@ function TalentLoginPage() {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const {isLoading} = useSelector((state)=>state.isLoading);
+  const {isLoading} = useSelector((state)=>state.auth);
 
   const currentYear = new Date().getFullYear();
 
@@ -170,11 +170,11 @@ async function onSubmit(event) {
 
               {/* Button */}
               <Button
-                onClick={() => onSubmit}
+                type="submit"
                 className="w-full bg-blue-700 hover:bg-blue-800 py-5 text-white text-sm cursor-pointer"
               >
-                {/* {isLoading ? 'Signing to dashboard...': 'Sign In to Dashboard →'} */}
-               Sign In to Dashboard →
+                {isLoading ? 'Signing to dashboard...': 'Sign In to Dashboard →'}
+               {/* Sign In to Dashboard → */}
               </Button>
             </form>
 

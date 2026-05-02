@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LandingPage from "./pages/landing";
 import Selection from "./pages/landing/selection";
