@@ -12,8 +12,10 @@ export const fetchInstitutions = createAsyncThunk(
   "institutions/fetchInstitutions",
   async (_, { rejectWithValue }) => {
     try {
-const result = await axios.get("api/institutions");
+const result = await axios.get("/api/institutions");
       return result.data;
+      console.log(result.data);
+      
     } catch (error) {
       console.error("Institutions fetch error:", error);
       return rejectWithValue(error.response?.data || error.message);

@@ -56,7 +56,7 @@ function Header() {
 
       <div className="ml-auto flex items-center gap-4">
         <motion.div variants={buttonVariants} onClick={()=>navigate('/selection')}>
-          <Button className="bg-blue-800 text-white px-4 py-[18px] rounded-md cursor-pointer hover:opacity-80 hidden lg:flex">
+          <Button className="bg-blue-800 text-white px-4 py-[18px] rounded-md cursor-pointer hover:opacity-80 flex">
             {/* <UserPlus className="h-4 w-4 mr-2"/> */}
             Sign In
             <LogIn className="h-4 w-4 ml-2" />

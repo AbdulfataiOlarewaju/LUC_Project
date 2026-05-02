@@ -11,21 +11,41 @@ import {
 } from "lucide-react";
 import { Fragment } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Sheet, SheetContent } from "../ui/sheet";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { logout, logoutUser } from "@/store/auth";
+import { toast } from "sonner";
 
 const menuItems = [
-  { id: "dashboard", label: "Dashboard", path: "/talent-dashboard", icon: LayoutDashboard },
-  { id: "portfolio", label: "My Portfolio", path: "/talent-portfolio", icon: Folder },
-  { id: "logs", label: "Learning Logs", path: "/talent-logs", icon: BookOpen },
-  { id: "messages", label: "Messages", path: "/talent-messages", icon: MessageSquare },
-  { id: "competitions", label: "Competitions", path: "/talent-competitions", icon: Trophy },
-  { id: "competitions", label: "Settings", path: "/talent-settings", icon: Settings },
+  { id: "dashboard", label: "Dashboard", path: "/talent/dashboard", icon: LayoutDashboard },
+  { id: "portfolio", label: "My Portfolio", path: "/talent/portfolio", icon: Folder },
+  { id: "logs", label: "Learning Logs", path: "/talent/logs", icon: BookOpen },
+  { id: "messages", label: "Messages", path: "/talent/messages", icon: MessageSquare },
+  { id: "competitions", label: "Competitions", path: "/talent/competitions", icon: Trophy },
+  { id: "settings", label: "Settings", path: "/talent/settings", icon: Settings },
 ];
+
+
 
 function SidebarContent({ setOpen }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
+  const { refreshToken } = useSelector((state) => state.auth);
+
+  const handleLogout = async () => {
+    if (refreshToken) {
+      await dispatch(logoutUser(refreshToken)).unwrap().catch(() => {
+        // ignore logout API error and still clear local state
+          toast.message("Logged out successfully");
+      });
+    }
+
+    dispatch(logout());
+    navigate("/talent/sign-in");
+    if (setOpen) setOpen(false);
+  };
 
   return (
     <div className="flex flex-col h-full justify-between bg-white">
@@ -96,7 +116,7 @@ function SidebarContent({ setOpen }) {
       </div>
     </div>
         <div
-          // onClick={() => navigate("/talent-settings")}
+          onClick={handleLogout}
           className="flex items-center gap-3 mt-4 px-4 py-2.5 rounded-lg cursor-pointer text-sm text-blue-800 hover:bg-slate-100"
         >
           <LogOut className="w-4 h-4" />

@@ -296,7 +296,7 @@ function TalentRegisterTwoPage() {
             className="w-full bg-blue-700 py-5 cursor-pointer"
             onClick={()=>{
               handleContinue();
-              navigate('/talent-sign-up/step-three')
+navigate('/talent/sign-up/step-three')
             }}
           >
             Continue →

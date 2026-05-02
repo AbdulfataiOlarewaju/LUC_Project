@@ -153,7 +153,7 @@ function TalentRegisterOnePage() {
                     key={item.value}
                     type="button"
                     onClick={() => setLevel(item.value)}
-                    className={`rounded-md py-2 text-sm font-medium transition-colors border ${
+                    className={`rounded-md py-2 md:text-sm font-medium transition-colors border text-[12.5px] ${
                       selected
                         ? "bg-blue-700 text-white border-blue-700"
                         : "bg-white text-slate-700 border-slate-200 hover:bg-blue-50"
@@ -182,7 +182,7 @@ function TalentRegisterOnePage() {
         level,
       })
     );
-    navigate("/talent-sign-up/step-two");
+navigate("/talent/sign-up/step-two");
   }}
               disabled={!canContinue}
               className="bg-blue-700"
