@@ -8,20 +8,12 @@ const initialState = {
   error: null,
 };
 
-// fetch All institutionsyy
+// fetch All institutions
 export const fetchInstitutions = createAsyncThunk(
   "institutions/fetchInstitutions",
   async (_, { rejectWithValue }) => {
     try {
-<<<<<<< HEAD
-      // Use vite proxy on development, full URL on production
-      const apiUrl = import.meta.env.PROD 
-        ? "https://luc-m8t9.onrender.com/api/institutions"
-        : "/api/institutions";
-      
-=======
       const apiUrl = getApiUrl("/api/institutions");
->>>>>>> Abdulfatai/frontend
       const result = await axios.get(apiUrl);
       return result.data;
       console.log(result.data);
