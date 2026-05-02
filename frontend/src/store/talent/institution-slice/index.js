@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { getApiUrl } from "@/lib/api";
 
 const initialState = {
   isLoading: true,
@@ -12,12 +13,7 @@ export const fetchInstitutions = createAsyncThunk(
   "institutions/fetchInstitutions",
   async (_, { rejectWithValue }) => {
     try {
-      // Use vite proxy on development, full URL on production
-      const apiUrl = import.meta.env.PROD 
-        ? "https://luc-m8t9.onrender.com/api/institutions"
-        : "/api/institutions";
-      
-      const result = await axios.get(apiUrl);
+const result = await axios.get("/api/institutions");
       return result.data;
       console.log(result.data);
       
