@@ -1,28 +1,51 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Briefcase, Building, LogIn, Mail, Lock } from "lucide-react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
-  headerVariants,
-  buttonVariants,
-} from "@/lib/animations";
+  GraduationCap,
+  Briefcase,
+  Building,
+  LogIn,
+  Mail,
+  Lock,
+} from "lucide-react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { headerVariants, buttonVariants } from "@/lib/animations";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import studentPortal from "@/assets/college campus-rafiki.png" 
-
-
+import studentPortal from "@/assets/college campus-rafiki.png";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "@/store/auth";
+import { toast } from "sonner";
 
 function TalentLoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // const {isLoading} = useSelector((state)=>state.isLoading);
 
   const currentYear = new Date().getFullYear();
 
-  function onSubmit(event){
-    event.preventDefault()
+async function onSubmit(event) {
+    event.preventDefault();
+    const finalData = { email, password };
+    
+    try {
+      const result = await dispatch(loginUser(finalData)).unwrap();
+      
+      toast.success(result?.message);
+      navigate('/talent/dashboard');
+    } catch (error) {
+      
+      console.error("Login error:", error);
+      toast.error(error?.error);
+    }
   }
-    return ( 
-        <div className="min-h-screen bg-slate-50">
-             <motion.header
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <motion.header
         className="px-4 lg:px-20 h-16 flex items-center justify-between border-b bg-white fixed top-0 left-0 right-0 z-50 w-screen"
         initial="hidden"
         animate="visible"
@@ -60,132 +83,134 @@ function TalentLoginPage() {
       </motion.header>
 
       <main className="pt-32 pb-20 px-4 lg:px-20">
-  <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg grid lg:grid-cols-2 overflow-hidden">
+        <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg grid lg:grid-cols-2 overflow-hidden">
+          {/* LEFT SIDE */}
+          <div className="relative hidden lg:block">
+            <img
+              src={studentPortal}
+              alt="student portal"
+              className="h-full w-full object-cover"
+            />
 
-    {/* LEFT SIDE */}
-    <div className="relative hidden lg:block">
-      <img
-        src={studentPortal}
-        alt="student portal"
-        className="h-full w-full object-cover"
-      />
+            {/* gradient overlay */}
+            <div className="absolute inset-0 bg-linear-to-t from-blue-700/70 to-transparent"></div>
 
-      {/* gradient overlay */}
-      <div className="absolute inset-0 bg-linear-to-t from-blue-700/70 to-transparent"></div>
+            <div className="absolute bottom-10 left-10 text-white max-w-sm">
+              <span className="text-xs uppercase tracking-wider bg-white/20 px-2 py-1 rounded">
+                Student Portal
+              </span>
 
-      <div className="absolute bottom-10 left-10 text-white max-w-sm">
-        <span className="text-xs uppercase tracking-wider bg-white/20 px-2 py-1 rounded">
-          Student Portal
-        </span>
+              <h2 className="text-3xl font-bold mt-3">Unlock Your Potential</h2>
 
-        <h2 className="text-3xl font-bold mt-3">
-          Unlock Your Potential
-        </h2>
-
-        <p className="text-sm mt-2 text-white/90">
-          Connect with leading organizations and showcase your academic
-          achievements to the world.
-        </p>
-      </div>
-    </div>
-
-    {/* RIGHT SIDE */}
-    <div className="p-10">
-
-      <h2 className="text-2xl font-bold text-slate-900">
-        Talent Login
-      </h2>
-
-      <p className="text-md text-slate-500 mt-2">
-        Welcome Back, Scholar. Access your student profile and career
-        opportunities.
-      </p>
-
-      <form className="mt-8 space-y-5" onSubmit={onSubmit}>
-
-        {/* Email */}
-        <div>
-          <Label className="text-sm font-medium text-slate-700">
-           <Mail className="w-4 h-4"/> University Email
-          </Label>
-          <Input
-            type="email"
-            placeholder="name@university.edu"
-            required
-            className="mt-2 w-full rounded-md border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
-          />
-        </div>
-
-        {/* Password */}
-        <div>
-          <div className="flex justify-between">
-            <Label className="text-sm font-medium text-slate-700">
-             <Lock className="w-4 h-4"/> Password
-            </Label>
-
-            <Link
-              to="/forgot-password"
-              className="text-xs font-bold text-blue-700 hover:underline"
-            >
-              Forgot Password?
-            </Link>
+              <p className="text-sm mt-2 text-white/90">
+                Connect with leading organizations and showcase your academic
+                achievements to the world.
+              </p>
+            </div>
           </div>
 
-          <Input
-            type="password"
-            placeholder="••••••••"
-            required
-            className="mt-2 w-full rounded-md border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
-          />
-        </div>
+          {/* RIGHT SIDE */}
+          <div className="p-10">
+            <h2 className="text-2xl font-bold text-slate-900">Talent Login</h2>
 
-        {/* Remember */}
-        <div className="flex items-center gap-2 text-sm text-slate-600">
-          <Checkbox id="remember"  className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500" /> 
-          <span>Remember Me</span>
-        </div>
+            <p className="text-md text-slate-500 mt-2">
+              Welcome Back, Scholar. Access your student profile and career
+              opportunities.
+            </p>
 
-        {/* Button */}
-        <Button onClick={()=>onSubmit} className="w-full bg-blue-700 hover:bg-blue-800 py-5 text-white text-sm cursor-pointer">
-          Sign In to Dashboard →
-        </Button>
-      </form>
+            <form className="mt-8 space-y-5" onSubmit={onSubmit}>
+              {/* Email */}
+              <div>
+                <Label className="text-sm font-medium text-slate-700">
+                  <Mail className="w-4 h-4" /> University Email
+                </Label>
+                <Input
+                  type="email"
+                  placeholder="name@university.edu"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="mt-2 w-full rounded-md border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
+                />
+              </div>
 
-      <div className="mt-8 border-t pt-6 text-sm text-slate-500 text-center">
-        Don't have an account?{" "}
-        <Link
-          to="/talent-sign-up"
-          className="text-blue-700 font-medium hover:underline"
-        >
-          Register your University
-        </Link>
-      </div>
+              {/* Password */}
+              <div>
+                <div className="flex justify-between">
+                  <Label className="text-sm font-medium text-slate-700">
+                    <Lock className="w-4 h-4" /> Password
+                  </Label>
 
-    </div>
-  </div>
-</main>
-
-
-        <footer className="border-t border-slate-200 bg-white py-8">
-                <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 text-xs text-slate-500 sm:flex-row">
-                  <p>© {currentYear} LUC Platform. All rights reserved.</p>
-                  <div className="flex items-center gap-4">
-                    <Link to="#" className="hover:text-slate-700">
-                      Privacy Policy
-                    </Link>
-                    <span className="h-4 w-px bg-slate-200" />
-                    <Link to="#" className="hover:text-slate-700">
-                      Terms of Service
-                    </Link>
-                    <span className="h-4 w-px bg-slate-200" />
-                    <Link to="#" className="hover:text-slate-700">
-                      Support
-                    </Link>
-                  </div>
+                  <Link
+                    to="/forgot-password"
+                    className="text-xs font-bold text-blue-700 hover:underline"
+                  >
+                    Forgot Password?
+                  </Link>
                 </div>
-              </footer>
+
+                <Input
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="mt-2 w-full rounded-md border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
+                />
+              </div>
+
+              {/* Remember */}
+              <div className="flex items-center gap-2 text-sm text-slate-600">
+                <Checkbox
+                  id="remember"
+                  className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                />
+                <span>Remember Me</span>
+              </div>
+
+              {/* Button */}
+              <Button
+                onClick={() => onSubmit}
+                className="w-full bg-blue-700 hover:bg-blue-800 py-5 text-white text-sm cursor-pointer"
+              >
+                {/* {isLoading ? 'Signing to dashboard...': 'Sign In to Dashboard →'} */}
+               Sign In to Dashboard →
+              </Button>
+            </form>
+
+            <div className="mt-8 border-t pt-6 text-sm text-slate-500 text-center">
+              Don't have an account?{" "}
+              <Link
+                to="/talent/sign-up"
+                className="text-blue-700 font-medium hover:underline"
+              >
+                Register your University
+              </Link>
+            </div>
+          </div>
         </div>
-     );
+      </main>
+
+      <footer className="border-t border-slate-200 bg-white py-8">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 text-xs text-slate-500 sm:flex-row">
+          <p>© {currentYear} LUC Platform. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <Link to="#" className="hover:text-slate-700">
+              Privacy Policy
+            </Link>
+            <span className="h-4 w-px bg-slate-200" />
+            <Link to="#" className="hover:text-slate-700">
+              Terms of Service
+            </Link>
+            <span className="h-4 w-px bg-slate-200" />
+            <Link to="#" className="hover:text-slate-700">
+              Support
+            </Link>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
 }
 
 export default TalentLoginPage;

@@ -49,15 +49,17 @@ const handleSubmit = async () => {
 
     console.log(result);
 
-    toast.success("Registration successful!");
-    navigate("/talent-sign-up/verification");
+    toast.success(result?.message);
+navigate("/talent/sign-in");
   } catch (error) {
     console.error(error);
+        toast.error(error?.error);
 
     
     toast.error(error?.error || "Registration failed");
   }
   console.log(finalData);
+
   
 };
 
@@ -190,7 +192,7 @@ const handleSubmit = async () => {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <button
                 type="button"
-                onClick={() => navigate("/talent-sign-up/step-two")}
+onClick={() => navigate("/talent/sign-up/step-two")}
                 className="flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"
               >
                 ← Back

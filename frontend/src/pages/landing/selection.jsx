@@ -18,7 +18,7 @@ const selections = [
     img: student,
     subtitle: "Talent",
     icon: GraduationCap,
-    link: "/talent-sign-in",
+link: "/talent/sign-in",
     description:
       "Get your skills verified and showcase your portfolio to top global employers.",
     buttonLabel: "Sign In as Talent",

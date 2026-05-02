@@ -30,7 +30,7 @@ export default function Hero() {
 
   console.log("Hero institutions:", institutions);
   console.log("Talents state:", talents);
-  
+  const validInstitutions = Array.isArray(institutions) ? institutions : [];
 
   return (
     <motion.section 
@@ -94,14 +94,12 @@ export default function Hero() {
                 </SelectTrigger>
                 <SelectContent className='mt-9'>
                   {
-                    
-                     (
-                    institutions.map((institution) => (
+                    validInstitutions.map((institution) => (
                       <SelectItem key={institution.id} value={institution.name}>
                         {institution.name}
                       </SelectItem>
                     ))
-                  ) }
+                  }
                 </SelectContent>
               </Select>
                   
