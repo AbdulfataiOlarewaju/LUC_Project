@@ -20,11 +20,6 @@ import { loginUser } from "@/store/auth";
 import { toast } from "sonner";
 
 function TalentLoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  // const {isLoading} = useSelector((state)=>state.isLoading);
 
   const currentYear = new Date().getFullYear();
 
@@ -168,15 +163,11 @@ async function onSubmit(event) {
                 <span>Remember Me</span>
               </div>
 
-              {/* Button */}
-              <Button
-                onClick={() => onSubmit}
-                className="w-full bg-blue-700 hover:bg-blue-800 py-5 text-white text-sm cursor-pointer"
-              >
-                {/* {isLoading ? 'Signing to dashboard...': 'Sign In to Dashboard →'} */}
-               Sign In to Dashboard →
-              </Button>
-            </form>
+        {/* Button */}
+        <Button onClick={()=>onSubmit} className="w-full bg-blue-700 hover:bg-blue-800 py-5 text-white text-sm cursor-pointer">
+          Sign In to Dashboard →
+        </Button>
+      </form>
 
             <div className="mt-8 border-t pt-6 text-sm text-slate-500 text-center">
               Don't have an account?{" "}
