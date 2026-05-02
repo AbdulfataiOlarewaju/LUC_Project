@@ -93,7 +93,10 @@ export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (FormData, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/api/auth/register", FormData);
+      const apiUrl = import.meta.env.PROD
+        ? "https://luc-m8t9.onrender.com/api/auth/register"
+        : "/api/auth/register";
+      const response = await axios.post(apiUrl, FormData);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
@@ -105,7 +108,10 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (FormData, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/api/auth/login", FormData);
+      const apiUrl = import.meta.env.PROD
+        ? "https://luc-m8t9.onrender.com/api/auth/login"
+        : "/api/auth/login";
+      const response = await axios.post(apiUrl, FormData);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
@@ -120,7 +126,10 @@ export const logoutUser = createAsyncThunk(
       if (!refreshToken) {
         return { message: "No refresh token available" };
       }
-      const response = await axios.post("/api/auth/logout", { refreshToken });
+      const apiUrl = import.meta.env.PROD
+        ? "https://luc-m8t9.onrender.com/api/auth/logout"
+        : "/api/auth/logout";
+      const response = await axios.post(apiUrl, { refreshToken });
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);

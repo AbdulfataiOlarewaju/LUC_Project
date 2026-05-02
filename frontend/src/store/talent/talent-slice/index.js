@@ -11,7 +11,10 @@ export const fetchAllTalents = createAsyncThunk(
   "talents/fetchAllTalents",
   async (_, { rejectWithValue }) => {
     try {
-      const result = await axios.get("/api/talents/public");
+      const apiUrl = import.meta.env.PROD
+        ? "https://luc-m8t9.onrender.com/api/talents/public"
+        : "/api/talents/public";
+      const result = await axios.get(apiUrl);
 
       return result.data;
     } catch (error) {
