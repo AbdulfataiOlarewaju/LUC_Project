@@ -12,7 +12,10 @@ export const fetchNiches = createAsyncThunk(
   "niches/fetchNiches",
   async (_, { rejectWithValue }) => {
     try {
-      const result = await axios.get("/api/niches");
+      const apiUrl = import.meta.env.PROD
+        ? "https://luc-m8t9.onrender.com/api/niches"
+        : "/api/niches";
+      const result = await axios.get(apiUrl);
 
       return result.data;
     } catch (error) {
@@ -26,7 +29,10 @@ export const fetchSubNiches = createAsyncThunk(
   "niches/subNiches",
   async (nicheId, { rejectWithValue }) => {
     try {
-      const result = await axios.get(`/api/niches/${nicheId}/sub-niches`);
+      const apiUrl = import.meta.env.PROD
+        ? `https://luc-m8t9.onrender.com/api/niches/${nicheId}/sub-niches`
+        : `/api/niches/${nicheId}/sub-niches`;
+      const result = await axios.get(apiUrl);
 
       return { nicheId, data: result.data };
     } catch (error) {
